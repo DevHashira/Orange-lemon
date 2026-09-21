@@ -77,7 +77,7 @@ pipeline{
         stage('SonarQube Analysis'){
             steps{
                 timeout(time:1, unit: "DAYS"){
-                    input message: 'Affirm approval for SOnarqube analysis'
+                    input message: 'Affirm approval for static code analysis'
                 }
                 echo "Initiating code analysis with Sonarqube"
                 sh 'mvn sonar:sonar'
@@ -106,7 +106,6 @@ pipeline{
         }
     }
 }
-
 
 
 
