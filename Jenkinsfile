@@ -47,7 +47,7 @@
 
 
 pipeline{
-    agent any
+    agent node_aws
     tools{
         maven 'raven'
     }
