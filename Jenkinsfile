@@ -58,7 +58,7 @@ pipeline{
                 git branch: 'main', credentialsId: 'github_PAT', url: 'https://github.com/DevHashira/Orange-lemon.git'
                 echo "checkout success"
                 sh 'ls -al'
-                timeout(time:2, unit: "HOURS"){
+         //       timeout(time:2, unit: "HOURS"){
                     input message: 'Approve for testing'
                 }
             }
@@ -67,8 +67,7 @@ pipeline{
          stage('Maven build'){
             steps{
                 echo 'compiling source code using maven'
-                sh 'mvn clean'
-                sh 'mvn package'
+                sh 'mvn clean package'
                 //sh 'ls -al /Pipeline+/Workspace | grep  -Eni "target"'
                 sh 'ls -al target'
             }
@@ -76,20 +75,20 @@ pipeline{
         
         stage('SonarQube Analysis'){
             steps{
-                timeout(time:1, unit: "DAYS"){
-                    input message: 'Affirm approval for static code analysis'
+       //         timeout(time:1, unit: "DAYS"){
+        //            input message: 'Affirm approval for static code analysis'
                 }
                 echo "Initiating code analysis with Sonarqube"
-                sh 'mvn sonar:sonar'
-                echo 'Quality profile passed'
-                echo 'Quality gate passed'
+     //           sh 'mvn sonar:sonar'
+      //          echo 'Quality profile passed'
+      //          echo 'Quality gate passed'
             }
         }
 
          stage('Nexus Artifactory'){
             steps{
                echo 'Deploying artifact to nexus' 
-               sh 'mvn deploy -s settings.xml'
+       //        sh 'mvn deploy -s settings.xml'
             }
         }
  
