@@ -83,6 +83,31 @@ pipeline{
                 sh 'ls -al target'
             }
         }
+
+        stage{
+            parallel{
+                stage('Testing out the parallel block'){
+                    steps{
+                        echo "Initial parallel stage"
+                        sh "sleep 10"
+                    }
+                }
+                stage('Second phase of the parallel test'){
+                    steps{
+                        echo "2nd quarter initiated"
+                        sh "sleep 10"
+                    }
+                }
+                stage('3rd quarter')
+                environment{
+                    NAP="sleep 10"
+                }
+                step{
+                    echo "concluding phase of the parallel test"
+                    sh "${env.NAP}"
+                }
+            }
+        }
         
    /**    stage('SonarQube Analysis'){
             steps{
