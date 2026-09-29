@@ -106,9 +106,9 @@ pipeline{
                         echo "concluding phase of the parallel test"
                         sh "${env.NAP}"
                     }
-               }
-         }
-    }
+                }
+            }
+        }
         
    /**    stage('SonarQube Analysis'){
             steps{
