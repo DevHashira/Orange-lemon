@@ -43,11 +43,21 @@
 
 
 
+
+
+
+
+
+
 //Declarative pipeline
 
 
 pipeline{
-    agent{ label 'node_aws' }
+    agent{ label 'node_aws'
+        }
+    environment{
+        BUILD_USER="Osamu Dazai"
+    }
     tools{
         maven 'raven'
     }
@@ -58,13 +68,14 @@ pipeline{
                 git branch: 'main', credentialsId: 'github_PAT', url: 'https://github.com/DevHashira/Orange-lemon.git'
                 echo "checkout success"
                 sh 'ls -al'
-         //       timeout(time:2, unit: "HOURS"){
-                    input message: 'Approve for testing'
+              /**  timeout(time:2, unit: "HOURS"){
+                input message: 'Approve for testing'
                 }
+              **/ 
             }
         }
 
-         stage('Maven build'){
+        stage('Maven build'){
             steps{
                 echo 'compiling source code using maven'
                 sh 'mvn clean package'
@@ -73,33 +84,38 @@ pipeline{
             }
         }
         
-        stage('SonarQube Analysis'){
+   /**    stage('SonarQube Analysis'){
             steps{
-       //         timeout(time:1, unit: "DAYS"){
-        //            input message: 'Affirm approval for static code analysis'
+                timeout(time:1, unit: "DAYS"){
+                    input message: 'Affirm approval for SOnarqube analysis'
                 }
                 echo "Initiating code analysis with Sonarqube"
-     //           sh 'mvn sonar:sonar'
-      //          echo 'Quality profile passed'
-      //          echo 'Quality gate passed'
+                sh 'mvn sonar:sonar'
+                echo 'Quality profile passed'
+                echo 'Quality gate passed'
             }
         }
 
          stage('Nexus Artifactory'){
             steps{
                echo 'Deploying artifact to nexus' 
-       //        sh 'mvn deploy -s settings.xml'
+               sh 'mvn deploy -s settings.xml'
             }
         }
- 
+ **/
          stage('Tomcat Deployment'){
             steps{
+          //      emailext body: '''Dear Dev,
+        //        The jenkins pipeline has been initiated by Dazai and your approval is required to proceed, ${env.BUILD_USER}, ${env.BUILD_URL} .''', 
+          //      subject: 'Jenkins Pipeline initiated and your approval is needed.', 
+            //    to: 'heyyopapio@gmail.com, devhashira@outlook.com'
                 echo "Requesting permission to go green for deployment"
-                timeout(time: 2, unit: "HOURS"){
-                    input message: 'Inquiring directives on deployment sire'
+            /**    timeout(time: 2, unit: "HOURS"){
+                 input message: 'Inquiring directives on approval sire'
                 }
+              **/
                 echo 'deploying to tomcat'
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat_ID', path: '', url: 'https://straddle-kerchief-scruffy.ngrok-free.dev ')], contextPath: 'web-app', war: 'target/*.war'
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat_ID', path: '', url: 'https://straddle-kerchief-scruffy.ngrok-free.dev')], contextPath: 'web-app', war: 'target/*.war'
                 echo 'deployment success'
             }
         }
