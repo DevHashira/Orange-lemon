@@ -84,7 +84,7 @@ pipeline{
             }
         }
 
-        stage{
+        stage('Testing'){
             parallel{
                 stage('Testing out the parallel block'){
                     steps{
@@ -98,16 +98,17 @@ pipeline{
                         sh "sleep 10"
                     }
                 }
-                stage('3rd quarter')
-                environment{
-                    NAP="sleep 10"
-                }
-                step{
-                    echo "concluding phase of the parallel test"
-                    sh "${env.NAP}"
-                }
-            }
-        }
+                stage('3rd quarter'){
+                    environment{
+                        NAP="sleep 10"
+                    }
+                    steps{
+                        echo "concluding phase of the parallel test"
+                        sh "${env.NAP}"
+                    }
+               }
+         }
+    }
         
    /**    stage('SonarQube Analysis'){
             steps{
