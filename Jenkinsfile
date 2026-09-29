@@ -47,7 +47,7 @@
 
 
 pipeline{
-    agent node_aws
+    agent{ label 'node_aws' }
     tools{
         maven 'raven'
     }
@@ -99,7 +99,7 @@ pipeline{
                     input message: 'Inquiring directives on deployment sire'
                 }
                 echo 'deploying to tomcat'
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat_ID', path: '', url: 'http://tomcat:8080')], contextPath: 'web-app', war: 'target/*.war'
+                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat_ID', path: '', url: 'https://straddle-kerchief-scruffy.ngrok-free.dev ')], contextPath: 'web-app', war: 'target/*.war'
                 echo 'deployment success'
             }
         }
