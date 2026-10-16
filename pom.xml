@@ -22,7 +22,8 @@
 		<spring.version>5.1.2.RELEASE</spring.version>
 		<junit.version>4.11</junit.version>
 		<log4j.version>1.2.17</log4j.version>
-		<sonar.host.url>http://sonarqube:9000</sonar.host.url>
+		<sonar.host.url>http://sonarq:9000</sonar.host.url>
+		<sonar.token>sqa_519e7e9dc2060e8293771374fb7ade00f63d5e31</sonar.token>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<sonar.qualitygate.wait>true</sonar.qualitygate.wait>
@@ -97,13 +98,13 @@
 	    <repository>
 	      <id>acada-release</id>
 	      <name>ACADA Learning release Nexus Repository</name>
-	      <url>http://nexus:8081/repository/maven-release-acada/</url>
+	      <url>http://nexus:8081/repository/maven-prototype-release/</url>
 	    </repository>
 
 	    <snapshotRepository>
 	      <id>acada-snapshot</id>
 	      <name>ACADA Learning snapshot Nexus Repository </name>
-	      <url>http://nexus:8081/repository/maven-snapshot-acada/</url>
+	      <url>http://nexus:8081/repository/maven-prototype-snapshot/</url>
 	    </snapshotRepository>
 
 	</distributionManagement>
@@ -116,6 +117,11 @@
     				<groupId>org.apache.maven.plugins</groupId>
     				<artifactId>maven-war-plugin</artifactId>
     				<version>3.3.2</version>
+			</plugin>
+			<plugin>
+				  <groupId>org.sonarsource.scanner.maven</groupId>
+				  <artifactId>sonar-maven-plugin</artifactId>
+				  <version>3.11.0.3922</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
