@@ -53,8 +53,9 @@
 
 
 pipeline{
-    agent{ label 'node_aws'
-        }
+    agent any
+   // agent{ label 'node_aws'
+   //     }
     environment{
         BUILD_USER="Osamu Dazai"
     }
@@ -113,7 +114,7 @@ pipeline{
    /**    stage('SonarQube Analysis'){
             steps{
                 timeout(time:1, unit: "DAYS"){
-                    input message: 'Affirm approval for SOnarqube analysis'
+                    input message: 'Affirm approval for Sonarqube analysis'
                 }
                 echo "Initiating code analysis with Sonarqube"
                 sh 'mvn sonar:sonar'
@@ -131,18 +132,25 @@ pipeline{
  **/
          stage('Tomcat Deployment'){
             steps{
-          //      emailext body: '''Dear Dev,
-        //        The jenkins pipeline has been initiated by Dazai and your approval is required to proceed, ${env.BUILD_USER}, ${env.BUILD_URL} .''', 
-          //      subject: 'Jenkins Pipeline initiated and your approval is needed.', 
-            //    to: 'heyyopapio@gmail.com, devhashira@outlook.com'
                 echo "Requesting permission to go green for deployment"
             /**    timeout(time: 2, unit: "HOURS"){
-                 input message: 'Inquiring directives on approval sire'
+                 input message: 'Inquiring directives on approval'
                 }
               **/
                 echo 'deploying to tomcat'
-                deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat_ID', path: '', url: 'https://straddle-kerchief-scruffy.ngrok-free.dev')], contextPath: 'web-app', war: 'target/*.war'
+            //    deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat_ID', path: '', url: 'https://straddle-kerchief-scruffy.ngrok-free.dev')], contextPath: 'web-app', war: 'target/*.war'
                 echo 'deployment success'
+            }
+        }
+
+        post{
+            always{
+                emailext(
+                    to: 'devhashira@outlook.com, ikeoluwaoladipupo21@gmail.com, youhavemerelyadoptedthedark@gmail.com',
+                    subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
+                    body: "Status: ${currentBuild.currentResult}\n${env.BUILD_URL}",
+                    attachLog: true
+                )
             }
         }
     }
