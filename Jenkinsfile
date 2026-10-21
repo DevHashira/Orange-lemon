@@ -142,16 +142,15 @@ pipeline{
                 echo 'deployment success'
             }
         }
-
-        post{
-            always{
-                emailext(
+    }
+    post{
+        always{
+            emailext(
                     to: 'devhashira@outlook.com, ikeoluwaoladipupo21@gmail.com, youhavemerelyadoptedthedark@gmail.com',
                     subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
                     body: "Status: ${currentBuild.currentResult}\n${env.BUILD_URL}",
                     attachLog: true
-                )
-            }
+            )
         }
     }
 }
