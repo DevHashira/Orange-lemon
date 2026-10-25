@@ -51,11 +51,10 @@
 
 //Declarative pipeline
 
-
 pipeline{
     agent any
-   // agent{ label 'node_aws'
-   //     }
+ //   agent{ label 'node_aws'
+ //       }
     environment{
         BUILD_USER="Osamu Dazai"
     }
@@ -133,10 +132,15 @@ pipeline{
          stage('Tomcat Deployment'){
             steps{
                 echo "Requesting permission to go green for deployment"
-            /**    timeout(time: 2, unit: "HOURS"){
-                 input message: 'Inquiring directives on approval'
+                emailext(
+                    to:"${env.EMAILADD}",
+                    subject: "CD Approval Needed",
+                    body: "Build #${env.BUILD_NUMBER} is currently running and was initiated by DAZAI, \n the build will terminate in 180 seconds without a response. Hence, click the following link to submit a response."
+                    )
+                timeout(time:3, unit:"MINUTES"){
+                    input message: "Your approval is needed for green light on deployment",
+                        ok: 'Go Green Sergent'
                 }
-              **/
                 echo 'deploying to tomcat'
             //    deploy adapters: [tomcat9(alternativeDeploymentContext: '', credentialsId: 'tomcat_ID', path: '', url: 'https://straddle-kerchief-scruffy.ngrok-free.dev')], contextPath: 'web-app', war: 'target/*.war'
                 echo 'deployment success'
@@ -146,14 +150,13 @@ pipeline{
     post{
         always{
             emailext(
-                    to: 'devhashira@outlook.com, ikeoluwaoladipupo21@gmail.com, youhavemerelyadoptedthedark@gmail.com',
+                    to: "${env.EMAILADD}",
                     subject: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}",
-                    body: "Status: ${currentBuild.currentResult}\n${env.BUILD_URL}",
+                    body: "Status: ${currentBuild.currentResult}\n${env.BUILD_URL},  https://straddle-kerchief-scruffy.ngrok-free.dev",
                     attachLog: true
             )
         }
     }
 }
-
 
 
