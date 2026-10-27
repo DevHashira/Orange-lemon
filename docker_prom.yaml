@@ -55,7 +55,7 @@ stress-ng --vm 2 --timeout 60s
 
 Grafana dashboard ID
 =====================
-10242
+1860
 
 
 docker-compose.yml
